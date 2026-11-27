@@ -24,6 +24,12 @@ TEXT = (
 
 
 def main() -> None:
+    # Enforce the bounty rule inside the program itself: the entry must be
+    # UTF-8 text of 1 to 1,000 Unicode code points, and not only whitespace.
+    if not 1 <= len(TEXT) <= 1000:
+        raise SystemExit(f"entry text is {len(TEXT)} characters, must be 1-1000")
+    if not TEXT.strip():
+        raise SystemExit("entry text must not be only whitespace")
     out = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("/output/entry.txt")
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(TEXT, encoding="utf-8")
